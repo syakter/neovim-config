@@ -1,8 +1,8 @@
-if has('win32') || has('win64')
-  let g:plugged_home = '~/AppData/Local/nvim/plugged'
-else
-  let g:plugged_home = '~/.vim/plugged'
-endif
+set runtimepath^=~/.vim runtimepath+=~/.vim/after
+let &packpath = &runtimepath
+
+let g:python3_host_prog = '/usr/bin/python3'
+let g:plugged_home = '~/.vim/plugged'
 " Plugins List
 call plug#begin(g:plugged_home)
   " UI related
@@ -61,24 +61,22 @@ set smartcase                     " turn on smartcase
 
 " Tab and Indent configuration
 set expandtab
+
 set tabstop=4
 set shiftwidth=4
 set mouse=a
 " Always show the signcolumn, otherwise it would shift the text each time
 " diagnostics appear/become resolved
 set signcolumn=yes
-inoremap <silent><expr> <TAB>
-      \ coc#pum#visible() ? coc#pum#next(1) :
-      \ CheckBackspace() ? "\<Tab>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+
+inoremap <expr> <Tab> coc#pum#visible() ? coc#pum#next(1) : "\<Tab>"
+inoremap <expr> <S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<S-Tab>"
 
 function! CheckBackspace() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
-inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
-                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+inoremap <expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
 
-
+source ~/.vimrc
